@@ -134,3 +134,4 @@ dist
 .pnp.*
 
 .env
+/node_modules

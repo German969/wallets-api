@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wallet } from './wallet.entity';
 import { Repository } from 'typeorm';
@@ -15,7 +15,15 @@ export class WalletsService {
   ) {}
 
   async addWallet(address: string) {
+    if (await this.repo.findOneBy({ address })) {
+      throw new BadRequestException('Address aready exists');
+    }
+
     const accountBalance = await this.getAddressAmount(address);
+
+    if (accountBalance == -1) {
+      throw new BadRequestException();
+    }
 
     const firstTransactionDate = await this.getAddressFirstTransaction(address);
 
@@ -47,7 +55,7 @@ export class WalletsService {
       this.httpService.get(apiUrl, { params: accountBalanceParams }),
     );
 
-    const amount = data.status == '1' ? data.result / WEI_CONVERSION : 0;
+    const amount = data.status == '1' ? data.result / WEI_CONVERSION : -1;
 
     return amount;
   }
