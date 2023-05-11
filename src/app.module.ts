@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { WalletsModule } from './wallets/wallets.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { RatesModule } from './rates/rates.module';
 
 @Module({
   imports: [
@@ -12,9 +13,10 @@ import { TypeOrmConfigService } from './config/typeorm.config';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService
+      useClass: TypeOrmConfigService,
     }),
     WalletsModule,
+    RatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
