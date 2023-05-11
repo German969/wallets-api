@@ -12,6 +12,6 @@ async function bootstrap() {
     origin: [...CORS_CLIENTS.split(',')],
   });
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
