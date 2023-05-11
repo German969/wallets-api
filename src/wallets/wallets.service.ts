@@ -94,7 +94,7 @@ export class WalletsService {
       }),
     );
 
-    const lastTxTimeStamp = Number(data.result[0]?.timeStamp);
+    const lastTxTimeStamp = Number(data.result[0]?.timeStamp) * 1000;
 
     const lastTxDate = new Date(lastTxTimeStamp);
 
@@ -102,7 +102,7 @@ export class WalletsService {
   }
 
   async getAllWallets() {
-    return this.repo.find();
+    return this.repo.find({ order: { favourite: 'DESC' } });
   }
 
   async updateAccountBalance(address: string) {

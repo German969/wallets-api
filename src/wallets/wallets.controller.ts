@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { AddWalletDto } from './dtos/add-wallet.dto';
 import { UpdateWalletBalanceDto } from './dtos/update-wallet-balance.dto';
-import { ToggleWalletFavouriteDto } from './dtos/toggle-wallet-favourite.dto';
 
 @Controller('wallets')
 export class WalletsController {
@@ -18,13 +17,13 @@ export class WalletsController {
     return this.walletsService.getAllWallets();
   }
 
-  @Patch()
+  @Patch('/:id/balance')
   updateWalletBalance(@Body() body: UpdateWalletBalanceDto) {
     return this.walletsService.updateAccountBalance(body.address);
   }
 
-  @Patch()
-  toggleAccountFavourite(@Body() body: ToggleWalletFavouriteDto) {
-    return this.walletsService.toggleWalletFavourite(body.address);
+  @Patch('/:id/favourite')
+  toggleAccountFavourite(@Param('id') id: string) {
+    return this.walletsService.toggleWalletFavourite(id);
   }
 }
