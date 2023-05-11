@@ -18,8 +18,11 @@ export class WalletsController {
   }
 
   @Patch('/:id/balance')
-  updateWalletBalance(@Body() body: UpdateWalletBalanceDto) {
-    return this.walletsService.updateAccountBalance(body.address);
+  updateWalletBalance(
+    @Param('id') id: string,
+    @Body() body: UpdateWalletBalanceDto,
+  ) {
+    return this.walletsService.updateAccountBalance(id, body.balance);
   }
 
   @Patch('/:id/favourite')

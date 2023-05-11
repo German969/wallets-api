@@ -21,7 +21,12 @@ export class RatesService {
       await this.updateRates();
     }
 
-    return this.repo.find();
+    const updatedRates = await this.repo.find();
+
+    return {
+      usd: updatedRates.find((rate) => rate.currency == 'USD').rate || null,
+      eur: updatedRates.find((rate) => rate.currency == 'EUR').rate || null,
+    };
   }
 
   async getEthExchangeRate() {

@@ -105,14 +105,19 @@ export class WalletsService {
     return this.repo.find({ order: { favourite: 'DESC' } });
   }
 
-  async updateAccountBalance(address: string) {
-    const accountBalance = await this.getAddressAmount(address);
-
+  async updateAccountBalance(address: string, newBalance?: number) {
     const currentWallet = await this.repo.findOneBy({ address });
 
-    if (accountBalance !== currentWallet.amount) {
-      currentWallet.amount = accountBalance;
+    if (newBalance) {
+      currentWallet.amount = newBalance;
       await this.repo.save(currentWallet);
+    } else {
+      const accountBalance = await this.getAddressAmount(address);
+
+      if (accountBalance !== currentWallet.amount) {
+        currentWallet.amount = accountBalance;
+        await this.repo.save(currentWallet);
+      }
     }
 
     return currentWallet;
